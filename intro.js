@@ -956,7 +956,7 @@
       //set new position to helper layer
       helperLayer.setAttribute('style', 'width: ' + (elementPosition.width  + widthHeightPadding)  + 'px; ' +
                                         'height:' + (elementPosition.height + widthHeightPadding)  + 'px; ' +
-                                        'top:'    + (elementPosition.top    - widthHeightPadding / 2)   + 'px;' +
+                                        'top:'    + (elementPosition.top    - widthHeightPadding / 2 - 1)   + 'px;' +
                                         'left: '  + (elementPosition.left   - widthHeightPadding / 2)   + 'px;');
 
     }
@@ -1009,7 +1009,8 @@
         highlightClass = 'introjs-helperLayer',
         nextTooltipButton,
         prevTooltipButton,
-        skipTooltipButton;
+        skipTooltipButton,
+        stepCount;
 
     //check for a current step highlight class
     if (typeof (targetElement.highlightClass) === 'string') {
@@ -1029,6 +1030,7 @@
       skipTooltipButton    = oldReferenceLayer.querySelector('.introjs-skipbutton');
       prevTooltipButton    = oldReferenceLayer.querySelector('.introjs-prevbutton');
       nextTooltipButton    = oldReferenceLayer.querySelector('.introjs-nextbutton');
+      stepCount = oldReferenceLayer.querySelector('.introjs-stepCount');
 
       //update or reset the helper highlight class
       oldHelperLayer.className = highlightClass;
@@ -1063,6 +1065,8 @@
       }
 
       self._lastShowElementTimer = window.setTimeout(function() {
+        stepCount.innerHTML = targetElement.step + '/' + self._introItems.length;
+
         //set current step to the label
         if (oldHelperNumberLayer !== null) {
           oldHelperNumberLayer.innerHTML = targetElement.step;
@@ -1107,7 +1111,8 @@
           tooltipTextLayer  = document.createElement('div'),
           bulletsLayer      = document.createElement('div'),
           progressLayer     = document.createElement('div'),
-          buttonsLayer      = document.createElement('div');
+          buttonsLayer      = document.createElement('div'),
+          tooltipCloseIcon  = document.createElement('button');
 
       helperLayer.className = highlightClass;
       referenceLayer.className = 'introjs-tooltipReferenceLayer';
@@ -1124,6 +1129,10 @@
 
       tooltipTextLayer.className = 'introjs-tooltiptext';
       tooltipTextLayer.innerHTML = targetElement.intro;
+      tooltipCloseIcon.className = 'introjs-closeIcon';
+      tooltipCloseIcon.onclick = function () {
+        _exitIntro.call(self, self._targetElement);
+      };
 
       bulletsLayer.className = 'introjs-bullets';
 
@@ -1182,6 +1191,7 @@
       }
 
       tooltipLayer.className = 'introjs-tooltip';
+      tooltipLayer.appendChild(tooltipCloseIcon);
       tooltipLayer.appendChild(tooltipTextLayer);
       tooltipLayer.appendChild(bulletsLayer);
       tooltipLayer.appendChild(progressLayer);
@@ -1234,6 +1244,13 @@
 
         _exitIntro.call(self, self._targetElement);
       };
+
+      //step counts
+      stepCount = document.createElement('span');
+      stepCount.className = 'introjs-stepCount';
+      _setAnchorAsButton(stepCount);
+      stepCount.innerHTML = targetElement.step + '/' + this._introItems.length;
+      buttonsLayer.appendChild(stepCount);
 
       buttonsLayer.appendChild(skipTooltipButton);
 

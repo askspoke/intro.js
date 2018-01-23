@@ -76,6 +76,10 @@
       showBullets: true,
       /* Show tour progress? */
       showProgress: false,
+      /* Show which step users are on in the format like this 1 / 3 */
+      showStepNumbers: true,
+      /* Show close icon on the top right hand corner */
+      showTooltipCloseIcon: true,
       /* Scroll to highlighted element? */
       scrollToElement: true,
       /*
@@ -1129,10 +1133,13 @@
 
       tooltipTextLayer.className = 'introjs-tooltiptext';
       tooltipTextLayer.innerHTML = targetElement.intro;
-      tooltipCloseIcon.className = 'introjs-closeIcon';
-      tooltipCloseIcon.onclick = function () {
-        _exitIntro.call(self, self._targetElement);
-      };
+
+      if (this._options.showtooltipCloseIcon === true) {
+        tooltipCloseIcon.className = 'introjs-closeIcon';
+        tooltipCloseIcon.onclick = function () {
+          _exitIntro.call(self, self._targetElement);
+        };
+      }
 
       bulletsLayer.className = 'introjs-bullets';
 
@@ -1247,10 +1254,12 @@
 
       //step counts
       stepCount = document.createElement('span');
-      stepCount.className = 'introjs-stepCount';
-      _setAnchorAsButton(stepCount);
-      stepCount.innerHTML = targetElement.step + '/' + this._introItems.length;
-      buttonsLayer.appendChild(stepCount);
+      if (this._options.showStepNumbers === true) {
+        stepCount.className = 'introjs-stepCount';
+        _setAnchorAsButton(stepCount);
+        stepCount.innerHTML = targetElement.step + '/' + this._introItems.length;
+        buttonsLayer.appendChild(stepCount);
+      }
 
       buttonsLayer.appendChild(skipTooltipButton);
 

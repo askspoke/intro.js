@@ -77,7 +77,7 @@
       /* Show tour progress? */
       showProgress: false,
       /* Show which step users are on in the format like this 1 / 3 */
-      showStepNumbers: true,
+      showStepCounts: true,
       /* Show close icon on the top right hand corner */
       showTooltipCloseIcon: true,
       /* Scroll to highlighted element? */
@@ -1134,7 +1134,7 @@
       tooltipTextLayer.className = 'introjs-tooltiptext';
       tooltipTextLayer.innerHTML = targetElement.intro;
 
-      if (this._options.showtooltipCloseIcon === true) {
+      if (this._options.showTooltipCloseIcon === true) {
         tooltipCloseIcon.className = 'introjs-closeIcon';
         tooltipCloseIcon.onclick = function () {
           _exitIntro.call(self, self._targetElement);
@@ -1254,7 +1254,7 @@
 
       //step counts
       stepCount = document.createElement('span');
-      if (this._options.showStepNumbers === true) {
+      if (this._options.showStepCounts === true) {
         stepCount.className = 'introjs-stepCount';
         _setAnchorAsButton(stepCount);
         stepCount.innerHTML = targetElement.step + '/' + this._introItems.length;
